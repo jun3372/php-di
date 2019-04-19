@@ -112,7 +112,7 @@ class App
                     }
 
                     // 获取容器
-                    $avgs[] = $instance ??  $parameters[$key];
+                    $avgs[] = $instance ??  $parameters[$i];
                 } else {
                     $avgs[] = $parameters[$i] ?? null;
 
