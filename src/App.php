@@ -107,17 +107,18 @@ class App
                     $name = $type->getName();
                     // 获取容器
                     $instance = self::getInstance($name)->getInstance();
-                    if ($parameters[$i] == $instance) {
+                    if ($parameters[$i] === $instance) {
                         $i++;
                     }
 
                     // 获取容器
                     $avgs[] = $instance ??  $parameters[$i];
-                } else {
-                    $avgs[] = $parameters[$i] ?? null;
-
-                    $i++;
+                    continue;
                 }
+
+                // 设置默认值
+                $avgs[] = $parameters[$i] ?? null;
+                $i++;
             }
         }
 

@@ -20,10 +20,10 @@ class Test
 {
     public $a;
 
-    public function __construct(A $a, B $b, $c = 1)
+    public function __construct(A $a, $c = 1, B $b, $d = 'd')
     {
         $this->a = $a;
-        var_dump($c);
+        ddd($a, $b, $c, $d, $this->a);
     }
 
     public function demo($nane = 1)
@@ -40,10 +40,10 @@ class Test
 // $instance->demo1($name);
 
 $a = di(A::class);
-$a = di(B::class);
+$b = di(B::class);
 // print_r($a);
 // die;
 // $a = new A();
 
-$di = di(Test::class, $a, B::class, '12');
-$di->demo(1);
+$di = di(Test::class, $a, 12, $b, 'd');
+// $di->demo(1);

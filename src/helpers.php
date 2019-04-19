@@ -27,18 +27,20 @@ if (!function_exists('container')) {
 }
 
 
-function dd(...$vars)
-{
-    foreach ($vars as $key => $var) {
-        if ($key > 0){
-            echo PHP_EOL;
+if (!function_exists('ddd')) {
+    function ddd(...$vars)
+    {
+        foreach ($vars as $key => $var) {
+            if ($key > 0) {
+                echo PHP_EOL;
+            }
+
+            if (is_array($var) || is_object($var)) {
+                print_r($var);
+                continue;
+            }
+            var_dump($var);
         }
-        
-        if (is_array($var) || is_object($var)) {
-            print_r($var);
-            continue;
-        }
-        var_dump($var);
+        die;
     }
-    die;
 }
