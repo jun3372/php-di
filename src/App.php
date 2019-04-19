@@ -12,10 +12,30 @@ class App
     private static $instance = [];
 
 
-    public static function container($instance)
+    /**
+     * 处理容器
+     *
+     * @param string $instance
+     * @param array ...$parameters
+     * @return void
+     */
+    public static function container($instance, ...$parameters)
     {
         if (!is_object($instance)) {
-            $instance = new $instance();
+            // 实例化一个反射类
+            $class = new \ReflectionClass($instance);
+            // 创建一个新的类实例而不调用它的构造函数
+            $instance = $class->newInstanceWithoutConstructor();
+
+            // 获取构造函数
+            $constructor = $class->getConstructor();
+            // 是否存在构造函数
+            if ($constructor) {
+                // 获取参数列表
+                $parameters = self::getConstructorParameters($constructor, $parameters);
+                //执行构造函数的方法注入
+                $constructor->invokeArgs($instance, $parameters);
+            }
         }
 
         // 获取Di容器类
@@ -24,18 +44,84 @@ class App
             return self::setInstance(Di::class, new Di());
         });
 
+        // 克隆di容器对象
+        $di = clone $di;
 
-        // 获取类名
+        // 获取容器类名
         $name = get_class($instance);
+        // 判断是否已经存在容器类
         if (!isset(self::$instance[$name])) {
             // 实例化容器
             $instance = $di->register($instance);
 
             // 存储类到容器
-            return self::setInstance($name, $instance);
+            return self::setInstance($name, $instance)->getInstance();
         }
 
-        return self::getInstance($name);
+        // 获取已经存在的容器类
+        return self::getInstance($name)->getInstance();
+    }
+
+    /**
+     * 获取构造函数的参数列表
+     *
+     * @param [type] $reflect
+     * @param array $parameters
+     * @param array $avgs
+     * @return array
+     */
+    public static function getConstructorParameters($reflect, array $parameters, array $avgs = []): array
+    {
+        // 是否需要处理参数
+        if (count($parameters) > 0) {
+            // 获取所有已经存在容器
+            $instance = self::getInstance();
+            // 循环处理是否需要实例化的参数
+            foreach ($parameters as &$item) {
+                // 是否已经为对象
+                if (is_object($item)) {
+                    continue;
+                }
+
+                // 是否已经存在该容器
+                if (isset($instance[$item])) {
+                    $item = $instance[$item]->getInstance();
+                    continue;
+                }
+
+                // 是否需要实例化容器
+                if (class_exists($item)) {
+                    $item = self::container($item);
+                    continue;
+                }
+            }
+        }
+
+        if ($reflect->getNumberOfParameters() > 0) {
+            $i = 0;
+            foreach ($reflect->getParameters() as $key => $param) {
+                $type  = $param->getClass(); //获取当前注入对象的类型提示
+                // $value = $param->getName(); //获取参数名称
+                if ($type) {
+                    // 获取容器类名名称
+                    $name = $type->getName();
+                    // 获取容器
+                    $instance = self::getInstance($name)->getInstance();
+                    if ($parameters[$i] == $instance) {
+                        $i++;
+                    }
+
+                    // 获取容器
+                    $avgs[] = $instance ??  $parameters[$key];
+                } else {
+                    $avgs[] = $parameters[$i] ?? null;
+
+                    $i++;
+                }
+            }
+        }
+
+        return $avgs;
     }
 
     /**
@@ -61,8 +147,12 @@ class App
      * @param [type] $def
      * @return void
      */
-    public static function getInstance(string $name, $def = null)
+    public static function getInstance(string $name = '', $def = null)
     {
+        if (empty($name)) {
+            return self::$instance;
+        }
+
         if (isset(self::$instance[$name])) {
             return self::$instance[$name];
         }
