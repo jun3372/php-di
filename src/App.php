@@ -32,7 +32,7 @@ class App
             // 是否存在构造函数
             if ($constructor) {
                 // 获取参数列表
-                $parameters = self::getConstructorParameters($constructor, $parameters);
+                $parameters = App::getConstructorParameters($constructor, $parameters);
                 //执行构造函数的方法注入
                 $constructor->invokeArgs($instance, $parameters);
             }
@@ -75,7 +75,7 @@ class App
         // 是否需要处理参数
         if (count($parameters) > 0) {
             // 获取所有已经存在容器
-            $instance = self::getInstance();
+            $instance = App::getInstance();
             // 循环处理是否需要实例化的参数
             foreach ($parameters as &$item) {
                 // 是否已经为对象
@@ -91,7 +91,7 @@ class App
 
                 // 是否需要实例化容器
                 if (class_exists($item)) {
-                    $item = self::container($item);
+                    $item = App::container($item);
                     continue;
                 }
             }
@@ -101,12 +101,11 @@ class App
             $i = 0;
             foreach ($reflect->getParameters() as $key => $param) {
                 $type  = $param->getClass(); //获取当前注入对象的类型提示
-                // $value = $param->getName(); //获取参数名称
                 if ($type) {
                     // 获取容器类名名称
                     $name = $type->getName();
                     // 获取容器
-                    $instance = self::getInstance($name)->getInstance();
+                    $instance = App::getInstance($name)->getInstance();
                     if ($parameters[$i] === $instance) {
                         $i++;
                     }

@@ -4,6 +4,28 @@ use Jun3\App;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+
+
+
+if (!function_exists('dd')) {
+    function dd(...$vars)
+    {
+        foreach ($vars as $key => $var) {
+            if ($key > 0) {
+                echo PHP_EOL;
+            }
+
+            if (is_array($var) || is_object($var)) {
+                print_r($var);
+                continue;
+            }
+            var_dump($var);
+        }
+        die;
+    }
+}
+
+
 class A
 {
     public function demo($a)
@@ -13,8 +35,7 @@ class A
 }
 
 class B
-{
-}
+{ }
 
 class Test
 {
@@ -23,7 +44,7 @@ class Test
     public function __construct(A $a, $c = 1, B $b, $d = 'd')
     {
         $this->a = $a;
-        ddd($a, $b, $c, $d, $this->a);
+        dd($a, $b, $c, $d, $this->a);
     }
 
     public function demo($nane = 1)
