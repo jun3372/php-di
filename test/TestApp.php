@@ -1,10 +1,12 @@
 <?php
 
+namespace Jun3;
+
 use Jun3\App;
 
 require __DIR__ . '/../vendor/autoload.php';
-
-
+require __DIR__ . '/A.php';
+require __DIR__ . '/B.php';
 
 
 if (!function_exists('dd')) {
@@ -25,23 +27,11 @@ if (!function_exists('dd')) {
     }
 }
 
-
-class A
-{
-    public function demo($a)
-    {
-        print_r($a);
-    }
-}
-
-class B
-{ }
-
 class Test
 {
     public $a;
 
-    public function __construct(A $a, $c = 1, B $b, $d = 'd')
+    public function __construct(A $a, B $b, $c = 1, $d = 'd')
     {
         $this->a = $a;
         dd($a, $b, $c, $d, $this->a);
@@ -66,5 +56,5 @@ $b = di(B::class);
 // die;
 // $a = new A();
 
-$di = di(Test::class, $a, 12, $b, 'd');
+$di = di(Test::class, $a, $b, 12, 'd');
 // $di->demo(1);
