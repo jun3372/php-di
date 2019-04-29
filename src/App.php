@@ -15,8 +15,8 @@ class App
     /**
      * 处理容器
      *
-     * @param string $instance
-     * @param array ...$parameters
+     * @param  string $instance
+     * @param  array  ...$parameters
      * @return void
      */
     public static function container($instance, ...$parameters)
@@ -39,10 +39,13 @@ class App
         }
 
         // 获取Di容器类
-        $di = self::getInstance(Di::class, function () {
-            // 实例化Di容器类并存储
-            return self::setInstance(Di::class, new Di());
-        });
+        $di = self::getInstance(
+            Di::class,
+            function () {
+                // 实例化Di容器类并存储
+                return self::setInstance(Di::class, new Di());
+            }
+        );
 
         // 克隆di容器对象
         $di = clone $di;
@@ -65,9 +68,9 @@ class App
     /**
      * 获取构造函数的参数列表
      *
-     * @param [type] $reflect
-     * @param array $parameters
-     * @param array $avgs
+     * @param  [type] $reflect
+     * @param  array  $parameters
+     * @param  array  $avgs
      * @return array
      */
     public static function getConstructorParameters($reflect, array $parameters, array $avgs = []): array
@@ -127,8 +130,8 @@ class App
     /**
      * 设置实例
      *
-     * @param string $name
-     * @param [type] $instance
+     * @param  string $name
+     * @param  [type] $instance
      * @return void
      */
     public static function setInstance($name, $instance)
@@ -143,8 +146,8 @@ class App
     /**
      * 获取实例
      *
-     * @param string $name
-     * @param [type] $def
+     * @param  string $name
+     * @param  [type] $def
      * @return void
      */
     public static function getInstance(string $name = '', $def = null)

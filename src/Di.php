@@ -14,7 +14,7 @@ class Di
     /**
      * 注册实例
      *
-     * @param [type] $instance
+     * @param  [type] $instance
      * @return void
      */
     public function register($instance)
@@ -30,8 +30,8 @@ class Di
     /**
      * 自动调用容器内的方法
      *
-     * @param string $method
-     * @param array $parameters
+     * @param  string $method
+     * @param  array  $parameters
      * @return void
      */
     public function __call(string $method, array $parameters)
@@ -48,9 +48,9 @@ class Di
     /**
      * 执行类的属性方法调用
      *
-     * @param [type] $instance
-     * @param [type] $method
-     * @param [type] ...$parameters
+     * @param  [type] $instance
+     * @param  [type] $method
+     * @param  [type] ...$parameters
      * @return void
      */
     public function make($instance, $method, ...$parameters)
@@ -86,7 +86,7 @@ class Di
     /**
      * 设置实例
      *
-     * @param [type] $instance
+     * @param  [type] $instance
      * @return void
      */
     public function setInstance($instance)
