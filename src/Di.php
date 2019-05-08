@@ -15,7 +15,7 @@ class Di
      * 注册实例
      *
      * @param  [type] $instance
-     * @return void
+     * @return mixed
      */
     public function register($instance)
     {
@@ -32,7 +32,7 @@ class Di
      *
      * @param  string $method
      * @param  array  $parameters
-     * @return void
+     * @return mixed
      */
     public function __call(string $method, array $parameters)
     {
@@ -51,7 +51,7 @@ class Di
      * @param  [type] $instance
      * @param  [type] $method
      * @param  [type] ...$parameters
-     * @return void
+     * @return mixed
      */
     public function make($instance, $method, ...$parameters)
     {
@@ -87,7 +87,7 @@ class Di
      * 设置实例
      *
      * @param  [type] $instance
-     * @return void
+     * @return self
      */
     public function setInstance($instance)
     {
@@ -99,7 +99,7 @@ class Di
     /**
      * 获取实例
      *
-     * @return void
+     * @return mixed
      */
     public function getInstance()
     {
