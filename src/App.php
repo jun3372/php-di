@@ -17,7 +17,7 @@ class App
      *
      * @param  string $instance
      * @param  array  ...$parameters
-     * @return void
+     * @return mixed
      */
     public static function container($instance, ...$parameters)
     {
@@ -132,7 +132,7 @@ class App
      *
      * @param  string $name
      * @param  [type] $instance
-     * @return void
+     * @return mixed
      */
     public static function setInstance($name, $instance)
     {
@@ -148,7 +148,7 @@ class App
      *
      * @param  string $name
      * @param  [type] $def
-     * @return void
+     * @return mixed
      */
     public static function getInstance(string $name = '', $def = null)
     {
